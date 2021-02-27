@@ -15,11 +15,13 @@
   "author": "Sander Vispoel <contact@sandervispoel.com>",
   "license": "ISC",
   "dependencies": {
+    "@types/node-fetch": "2.5.8",
     "discord.js": "12.5.1",
     "dotenv": "8.2.0",
     "express": "4.17.1",
     "lodash": "4.17.21",
     "moment": "2.29.1",
+    "node-fetch": "2.6.1",
     "ts-toolbelt": "9.3.12",
     "tsconfig-paths": "3.9.0"
   },
