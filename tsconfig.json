@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist",
+        "module": "commonjs",
+        "target": "es6",
+        "removeComments": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "baseUrl": ".",
+        "paths": {
+            "audio/*": ["static/audio/*"],
+            "commands/*": ["src/commands/*"],
+            "DiscordBot": ["src/DiscordBot"],
+            "helpers/*": ["src/helpers/*"],
+            "images/*": ["static/images/*"],
+            "services/*": ["src/services/*"]
+        },
+        "lib": ["esnext"]
+    },
+    "exclude": ["node_modules", "src/**/test.ts"]
+}
