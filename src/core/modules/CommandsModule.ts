@@ -15,9 +15,11 @@ export default class CommandsModule {
         continue;
       }
 
+      const filename = file.replace('.ts', '');
+
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const service = require(`modules/commands/${file}`).default;
-      Container.get(service);
+      import(`../../modules/commands/${filename}.ts`)
+        .then(({ default: service }) => Container.get(service));
     }
   }
 }

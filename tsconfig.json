@@ -1,21 +1,24 @@
 {
     "compilerOptions": {
-        "outDir": "./dist",
-        "module": "commonjs",
+        "noEmit": true,
         "target": "es6",
+        "module": "esnext",
+        "lib": ["esnext"],
+        "moduleResolution": "node",
         "removeComments": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "strict": true,
+        "resolveJsonModule": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "baseUrl": ".",
+        "baseUrl": "src",
         "paths": {
-            "core/*": ["src/core/*"],
-            "modules/*": ["src/modules/*"],
-            "utils/*": ["src/utils/*"],
-        },
-        "lib": ["esnext"]
+            "core/*": ["core/*"],
+            "modules/*": ["modules/*"],
+            "utils/*": ["utils/*"]
+        }
     },
-    "exclude": ["node_modules", "src/**/test.ts"]
+    "include": ["src"],
+    "exclude": ["node_modules"]
 }
