@@ -7,6 +7,8 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "strict": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "baseUrl": ".",
         "paths": {
             "audio/*": ["static/audio/*"],

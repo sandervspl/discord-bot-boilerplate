@@ -1,18 +1,14 @@
-import Discord from 'discord.js';
+import { Service } from 'typedi';
 
-import Command from 'commands/Command';
+import DiscordCommand, { DiscordCommandService } from 'commands/Command';
 
-export class Ping extends Command {
-  constructor(discordClient: Discord.Client) {
-    super(
-      discordClient,
-      'ping',
-      {
-        prefix: '!',
-      },
-    );
 
-    this.onCommand((msg) => {
+@Service()
+export default class Ping {
+  constructor(
+    @DiscordCommand('ping', { prefix: '!' }) private command: DiscordCommandService,
+  ) {
+    this.command.onCommand((msg) => {
       msg.channel.send('Pong!');
     });
   }

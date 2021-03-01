@@ -1,26 +1,21 @@
-import Discord from 'discord.js';
+import fs from 'fs';
+import { Service } from 'typedi';
 
-import Command from 'commands/Command';
+import DiscordCommand, { DiscordCommandService } from 'commands/Command';
 
-import commands from '.';
-
-export class Commands extends Command {
+@Service()
+export default class Commands {
   readonly excludedCommands = ['commands'];
 
-  readonly commandNames = commands
-    .map((cmd) => cmd.name.toLowerCase())
-    .filter((cmd) => !this.excludedCommands.includes(cmd));
+  readonly commandNames = fs.readdirSync(__dirname)
+    .map((filename) => filename.toLowerCase().replace(/.[jt]sx?/, ''))
+    .filter((name) => !name.includes('index'))
+    .filter((name) => !this.excludedCommands.includes(name));
 
-  constructor(discordClient: Discord.Client) {
-    super(
-      discordClient,
-      'commands',
-      {
-        prefix: '!',
-      },
-    );
-
-    this.onCommand((msg) => {
+  constructor(
+    @DiscordCommand('commands', { prefix: '!' }) private command: DiscordCommandService,
+  ) {
+    this.command.onCommand((msg) => {
       if (this.commandNames.length > 0) {
         msg.channel.send(`Available commands: ${this.commandNames.join(', ')}`);
       }

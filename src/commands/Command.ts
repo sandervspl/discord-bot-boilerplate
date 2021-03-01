@@ -2,18 +2,32 @@ import Discord from 'discord.js';
 import moment from 'moment';
 import _ from 'lodash';
 import { O } from 'ts-toolbelt';
-import { Options, CommandCallback } from './types';
+import Container, { Constructable } from 'typedi';
 
-type ListenFn = (msg: Discord.Message, trimmedMsg: string) => boolean | Promise<boolean>;
+import DiscordBot from 'DiscordBot';
+import { Options, CommandCallback, ListenFn } from './types';
 
-export default abstract class Command {
+export default function DiscordCommand(
+  listen: string | ListenFn,
+  options?: Options,
+) {
+  return function (object: Constructable<unknown>, propertyName: string, index?: number) {
+    const bot = Container.get(DiscordBot);
+    const command = new DiscordCommandService(bot, listen, options);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    Container.registerHandler({ object, propertyName, index, value: (instance) => command });
+  };
+}
+
+export class DiscordCommandService {
   private cooldowns = new Discord.Collection();
-  protected readonly options: O.Required<Options, 'cooldown'> = {
+  public options: O.Required<Options, 'cooldown'> = {
     cooldown: 3000,
   };
 
   constructor(
-    protected readonly client: Discord.Client,
+    private discord: DiscordBot,
     readonly listen: string | ListenFn,
     options?: Options,
   ) {
@@ -24,7 +38,9 @@ export default abstract class Command {
   }
 
 
-  protected onCommand = (cb: CommandCallback) => this.client.on('message', async (msg) => {
+  onCommand = (cb: CommandCallback) => this.discord.client.on('message', async (msg) => {
+    console.log(msg);
+
     // Clean up message
     const content = msg.content
       .toLowerCase()
@@ -118,7 +134,7 @@ export default abstract class Command {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  protected onError = (msg: Discord.Message) => {
+  onError = (msg: Discord.Message) => {
     msg.channel.send('Oops, something went wrong. 🤖 The server admin has been notified.');
     console.error({
       listen: this.listen,
@@ -129,8 +145,8 @@ export default abstract class Command {
     });
   }
 
-  protected sendDMToAdmin = (...messages: (string | undefined)[]) => {
-    this.client.users.fetch(process.env.ADMIN_ID!).then((user) => {
+  sendDMToAdmin = (...messages: (string | undefined)[]) => {
+    this.discord.client.users.fetch(process.env.ADMIN_ID!).then((user) => {
       user.send(messages.join('\n'));
     });
   }

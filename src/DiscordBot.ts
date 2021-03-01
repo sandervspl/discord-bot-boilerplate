@@ -1,11 +1,11 @@
 import Discord from 'discord.js';
-import commands from './commands/services';
-// import services from './services';
+import { Service } from 'typedi';
 
-class DiscordBot {
-  public readonly client = new Discord.Client();
+@Service()
+export default class DiscordBot {
+  readonly client = new Discord.Client();
 
-  constructor() {
+  bootstrap() {
     this.client.login(process.env.BOT_TOKEN);
 
     this.client.on('ready', () => {
@@ -20,19 +20,6 @@ class DiscordBot {
           },
         });
       }
-
-      this.initServices();
-      this.initCommands();
     });
   }
-
-  private initServices = () => {
-    // services.forEach((services) => new services(this.client));
-  }
-
-  private initCommands = () => {
-    commands.forEach((command) => new command(this.client));
-  }
 }
-
-export default DiscordBot;

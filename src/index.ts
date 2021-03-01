@@ -1,8 +1,11 @@
 import path from 'path';
 import dotenv from 'dotenv';
 import express from 'express';
-import DiscordBot from 'DiscordBot';
+import { Container } from 'typedi';
+
 import env from 'helpers/env';
+import CommandServices from 'commands/services';
+import DiscordBot from 'DiscordBot';
 
 dotenv.config({
   path: path.resolve(process.cwd(), env.isDevelopment ? '.dev.env' : '.env'),
@@ -13,5 +16,9 @@ const PORT_DEFAULT = 5000;
 const PORT = Number(process.env.PORT) || PORT_DEFAULT;
 
 app.listen(PORT, () => {
-  new DiscordBot();
+  const discordBot = Container.get(DiscordBot);
+  discordBot.bootstrap();
+
+  const commandsService = Container.get(CommandServices);
+  commandsService.bootstrap();
 });

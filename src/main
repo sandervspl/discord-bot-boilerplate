@@ -1,2 +1,3 @@
+require('reflect-metadata');
 require('./tsconfig-paths-bootstrap.js');
 require('./index.js');
