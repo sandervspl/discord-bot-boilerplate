@@ -2,7 +2,7 @@ import Discord from 'discord.js';
 import { Service } from 'typedi';
 
 @Service()
-export default class DiscordBot {
+export default class DiscordClientService {
   readonly client = new Discord.Client();
 
   bootstrap() {

@@ -1,7 +1,8 @@
 import fs from 'fs';
 import { Service } from 'typedi';
 
-import DiscordCommand, { DiscordCommandService } from 'commands/Command';
+import DiscordCommand, { DiscordCommandService } from 'core/services/DiscordCommandService';
+
 
 @Service()
 export default class Commands {
@@ -9,7 +10,6 @@ export default class Commands {
 
   readonly commandNames = fs.readdirSync(__dirname)
     .map((filename) => filename.toLowerCase().replace(/.[jt]sx?/, ''))
-    .filter((name) => !name.includes('index'))
     .filter((name) => !this.excludedCommands.includes(name));
 
   constructor(

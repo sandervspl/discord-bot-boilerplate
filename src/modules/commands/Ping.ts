@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
 
-import DiscordCommand, { DiscordCommandService } from 'commands/Command';
+import DiscordCommand, { DiscordCommandService } from 'core/services/DiscordCommandService';
 
 
 @Service()

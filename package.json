@@ -4,10 +4,10 @@
   "description": "discord bot",
   "main": "main",
   "scripts": {
-    "dev": "ts-node-dev --respawn -r tsconfig-paths/register src/main.dev",
+    "dev": "ts-node-dev --respawn -r tsconfig-paths/register src/core/main.dev",
     "build": "npm run clean && tsc && npm run build:cp",
-    "build:cp": "cp src/index dist; cp ./{tsconfig-paths-bootstrap.js,tsconfig.json} dist",
-    "start": "node dist/main",
+    "build:cp": "cp src/core/main dist/core; cp ./{tsconfig-paths-bootstrap.js,tsconfig.json} dist",
+    "start": "node dist/core/main",
     "clean": "rimraf dist/",
     "lint": "eslint --ext .ts --ext .tsx src/"
   },

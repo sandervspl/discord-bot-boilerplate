@@ -1,2 +1,2 @@
 require('reflect-metadata');
-require('./index.ts');
+require('./main.ts');

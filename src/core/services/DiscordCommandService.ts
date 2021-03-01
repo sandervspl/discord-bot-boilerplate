@@ -4,15 +4,15 @@ import _ from 'lodash';
 import { O } from 'ts-toolbelt';
 import Container, { Constructable } from 'typedi';
 
-import DiscordBot from 'DiscordBot';
-import { Options, CommandCallback, ListenFn } from './types';
+import DiscordClientService from 'core/services/DiscordClientService';
+import { Options, CommandCallback, ListenFn } from 'core/types';
 
 export default function DiscordCommand(
   listen: string | ListenFn,
   options?: Options,
 ) {
   return function (object: Constructable<unknown>, propertyName: string, index?: number) {
-    const bot = Container.get(DiscordBot);
+    const bot = Container.get(DiscordClientService);
     const command = new DiscordCommandService(bot, listen, options);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -27,7 +27,7 @@ export class DiscordCommandService {
   };
 
   constructor(
-    private discord: DiscordBot,
+    private discord: DiscordClientService,
     readonly listen: string | ListenFn,
     options?: Options,
   ) {
@@ -39,8 +39,6 @@ export class DiscordCommandService {
 
 
   onCommand = (cb: CommandCallback) => this.discord.client.on('message', async (msg) => {
-    console.log(msg);
-
     // Clean up message
     const content = msg.content
       .toLowerCase()

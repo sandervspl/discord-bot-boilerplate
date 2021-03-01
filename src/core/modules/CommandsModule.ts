@@ -2,9 +2,9 @@ import fs from 'fs';
 import Container, { Service } from 'typedi';
 
 @Service()
-export default class CommandServices {
+export default class CommandsModule {
   bootstrap() {
-    const files = fs.readdirSync(__dirname);
+    const files = fs.readdirSync('./src/modules/commands');
 
     for (const file of files) {
       if (file.startsWith('.')) {
@@ -16,7 +16,7 @@ export default class CommandServices {
       }
 
       // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const service = require(`./${file}`).default;
+      const service = require(`modules/commands/${file}`).default;
       Container.get(service);
     }
   }
